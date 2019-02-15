@@ -1,0 +1,77 @@
+* {
+    box-sizing: border-box;
+}
+
+:host {
+    --snap-top-offset: 15vh;
+    --snap-bottom-height: 64px;
+
+    --sheet-max-width: none;
+
+    --sheet-box-shadow: 0 -2px 4px 0 rgba(0,0,0,0.03), 0 -6px 12px 0 rgba(0,0,0,0.03);
+    --sheet-box-shadow-closed: var(--sheet-box-shadow);
+    --sheet-box-shadow-open: var(--sheet-box-shadow);
+    --sheet-background-color: white;
+    --sheet-border-radius: 8px;
+    
+    --sheet-content-padding: 12px;
+    --sheet-content-padding-top: var(--sheet-content-padding);
+    --sheet-content-padding-right: var(--sheet-content-padding);
+    --sheet-content-padding-bottom: var(--sheet-content-padding);
+    --sheet-content-padding-left: var(--sheet-content-padding);
+
+    --sheet-indicator-size: 24px;
+    --sheet-indicator-color: rgba(0,0,0,0.54);
+
+    display: block;
+    position: fixed;
+    
+    top: var(--snap-top-offset);
+    right: 0;
+    bottom: calc(-100vh + calc(var(--snap-top-offset) - var(--snap-bottom-height)));
+    left: 0;
+    
+    pointer-events: none;
+}
+
+.container {
+    height: 100%;
+    margin: 0 auto;
+    max-width: var(--sheet-max-width);
+    /* background: red; */
+}
+
+.sheet {
+    pointer-events: all;
+    display: flex;
+    flex-flow: column;
+    background: var(--sheet-background-color);
+    height: calc(calc(100vh + calc(var(--snap-bottom-height) * 2)) - var(--snap-top-offset));
+    padding-bottom: var(--snap-bottom-height);
+    overflow: hidden;
+    border-top-left-radius: var(--sheet-border-radius);
+    border-top-right-radius: var(--sheet-border-radius);
+    box-shadow: var(--sheet-box-shadow);
+}
+
+:host(.is-closed) .sheet {
+    box-shadow: var(--sheet-box-shadow-closed);
+}
+
+:host(.is-open) .sheet {
+    box-shadow: var(--sheet-box-shadow-open);
+}
+
+.sheet-header {
+    padding: var(--sheet-content-padding-top) var(--sheet-content-padding-right) 0 var(--sheet-content-padding-left);
+}
+
+.sheet-content {
+    flex-grow: 1;
+    margin-bottom: var(--snap-bottom-height);
+    padding: 0 var(--sheet-content-padding-right) var(--sheet-content-padding-bottom) var(--sheet-content-padding-left);
+}
+
+h1 {
+    margin: 0;
+}
