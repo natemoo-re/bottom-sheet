@@ -17,6 +17,7 @@
     "test.watch": "stencil test --spec --e2e --watchAll"
   },
   "dependencies": {
+    "body-scroll-lock": "^2.6.1",
     "popmotion": "^8.6.2"
   },
   "devDependencies": {

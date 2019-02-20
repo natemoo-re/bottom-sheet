@@ -3,17 +3,47 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0">
-  <title>Stencil Component Starter</title>
-  <script src="/build/mycomponent.js"></script>
 
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <title>Bottom Sheet</title>
+  <script src="/build/bottom-sheet.js"></script>
+
+
+  <style>
+    body {
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
 
-  <my-component first="Stencil" last="'Don't call me a framework' JS"></my-component>
+  <button id="open">Open</button>
+  <button id="close">Close</button>
 
-  <bottom-sheet arrow="true">
-    <div>Hello world!</div>
+  <bottom-sheet>
+    <div slot="sheet-header"> Button and stuff </div>
+    <div>
+      <p>Hello world!</p>
+    </div>
   </bottom-sheet>
+
+  <!-- <bottom-sheet-screen></bottom-sheet-screen> -->
+
+  <script>
+    const bottomsheet = document.querySelector('bottom-sheet');
+    const openButton = document.getElementById('open');
+    const closeButton = document.getElementById('close');
+
+    openButton.onclick = () => {
+      bottomsheet.open()
+    }
+
+    closeButton.onclick = () => {
+      bottomsheet.close()
+    }
+  </script>
 
 </body>
 </html>

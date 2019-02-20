@@ -15,56 +15,40 @@ export namespace Components {
   interface BottomSheetIndicator {}
   interface BottomSheetIndicatorAttributes extends StencilHTMLAttributes {}
 
+  interface BottomSheetScreen {
+    'connectedBottomSheet': HTMLBottomSheetElement;
+    'disable': () => void;
+    'enable': () => void;
+    'progress': number;
+  }
+  interface BottomSheetScreenAttributes extends StencilHTMLAttributes {
+    'connectedBottomSheet'?: HTMLBottomSheetElement;
+    'progress'?: number;
+  }
+
   interface BottomSheet {
     'arrow': boolean;
+    'close': () => Promise<void>;
     'initialPosition': 'top' | 'bottom';
+    'open': () => Promise<void>;
   }
   interface BottomSheetAttributes extends StencilHTMLAttributes {
     'arrow'?: boolean;
     'initialPosition'?: 'top' | 'bottom';
-  }
-
-  interface MyComponent {
-    /**
-    * The first name
-    */
-    'first': string;
-    /**
-    * The last name
-    */
-    'last': string;
-    /**
-    * The middle name
-    */
-    'middle': string;
-  }
-  interface MyComponentAttributes extends StencilHTMLAttributes {
-    /**
-    * The first name
-    */
-    'first'?: string;
-    /**
-    * The last name
-    */
-    'last'?: string;
-    /**
-    * The middle name
-    */
-    'middle'?: string;
   }
 }
 
 declare global {
   interface StencilElementInterfaces {
     'BottomSheetIndicator': Components.BottomSheetIndicator;
+    'BottomSheetScreen': Components.BottomSheetScreen;
     'BottomSheet': Components.BottomSheet;
-    'MyComponent': Components.MyComponent;
   }
 
   interface StencilIntrinsicElements {
     'bottom-sheet-indicator': Components.BottomSheetIndicatorAttributes;
+    'bottom-sheet-screen': Components.BottomSheetScreenAttributes;
     'bottom-sheet': Components.BottomSheetAttributes;
-    'my-component': Components.MyComponentAttributes;
   }
 
 
@@ -74,28 +58,28 @@ declare global {
     new (): HTMLBottomSheetIndicatorElement;
   };
 
+  interface HTMLBottomSheetScreenElement extends Components.BottomSheetScreen, HTMLStencilElement {}
+  var HTMLBottomSheetScreenElement: {
+    prototype: HTMLBottomSheetScreenElement;
+    new (): HTMLBottomSheetScreenElement;
+  };
+
   interface HTMLBottomSheetElement extends Components.BottomSheet, HTMLStencilElement {}
   var HTMLBottomSheetElement: {
     prototype: HTMLBottomSheetElement;
     new (): HTMLBottomSheetElement;
   };
 
-  interface HTMLMyComponentElement extends Components.MyComponent, HTMLStencilElement {}
-  var HTMLMyComponentElement: {
-    prototype: HTMLMyComponentElement;
-    new (): HTMLMyComponentElement;
-  };
-
   interface HTMLElementTagNameMap {
     'bottom-sheet-indicator': HTMLBottomSheetIndicatorElement
+    'bottom-sheet-screen': HTMLBottomSheetScreenElement
     'bottom-sheet': HTMLBottomSheetElement
-    'my-component': HTMLMyComponentElement
   }
 
   interface ElementTagNameMap {
     'bottom-sheet-indicator': HTMLBottomSheetIndicatorElement;
+    'bottom-sheet-screen': HTMLBottomSheetScreenElement;
     'bottom-sheet': HTMLBottomSheetElement;
-    'my-component': HTMLMyComponentElement;
   }
 
 

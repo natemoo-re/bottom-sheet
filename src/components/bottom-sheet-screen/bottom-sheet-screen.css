@@ -1,0 +1,11 @@
+:host {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    z-index: calc(var(--sheet-z-index, 9) - 1);
+    background-color: var(--sheet-screen-background, rgba(0,0,0,0.4));
+}

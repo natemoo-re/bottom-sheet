@@ -1,7 +1,9 @@
-import { Component, Prop, Listen, State } from '@stencil/core';
-import { styler, inertia, listen, pointer, value, calc } from 'popmotion';
+import { Component, Prop, Listen, State, Watch, Method, Element } from '@stencil/core';
+import { styler, inertia, listen, pointer, value, calc, ValueReaction, Action, tween, TweenProps } from 'popmotion';
 import { Styler } from 'stylefire';
 import { HotSubscription } from 'popmotion/lib/reactions/types';
+import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock/lib/bodyScrollLock.es6.js';
+import { cubicBezier } from '@popmotion/easing';
 
 const mix = calc.getValueFromProgress;
 
@@ -13,34 +15,85 @@ const mix = calc.getValueFromProgress;
 })
 export class BottomSheet {
 
+    @Element() element: HTMLBottomSheetElement;
+
     private subscriptions: HotSubscription[] = [];
     private containerEl: HTMLDivElement;
     
     private sheetEl: HTMLDivElement;
     private sheetStyler: Styler;
 
+    private _screen: HTMLBottomSheetScreenElement;
+    @Prop({ connect: 'bottom-sheet-screen' }) screen: HTMLBottomSheetScreenElement;
+
     @State() dragging: boolean = false;
+    @Watch('dragging')
+    draggingChanged() {
+        const action = this.dragging ? disableBodyScroll : enableBodyScroll;
+        action(this.containerEl);
+    }
+
     @State() progress: number = 0;
 
     @Prop() arrow: boolean = false;
     @Prop() initialPosition: 'top' | 'bottom' = 'bottom';
+
+    private async animateSheet(to: number, tweenProps: TweenProps): Promise<void> {
+        const target = this.sheetY;
+        const from = target.get();
+        if (from === to) return Promise.resolve();
+
+        return new Promise((resolve) => {
+            const opts: TweenProps = { from, to, ...tweenProps };
+            const sub = this.sheetY.subscribe((v) => {
+                if (v === opts.to) {
+                    resolve();
+                    sub.unsubscribe();
+                    return;
+                }
+            });
+            tween(opts).start(target);
+        })
+    }
+
+    @Method()
+    async open() {
+        return this.animateSheet(0, { ease: cubicBezier(0.23, 1, 0.320, 1) })
+    }
+    
+    @Method()
+    async close() {
+        return this.animateSheet(this.boundaryHeight, { ease: cubicBezier(0.23, 1, 0.320, 1) })
+    }
     
     private onValueChange = (v: number) => {
         this.progress = 1 - (v / this.boundaryHeight);
-        // console.log(this.progress);
+        this._screen.progress = this.progress;
+    }
+
+    // private getCurrentAction = () => this.dragging ? this.pointer : this.intertia;
+
+    private pointer: Action;
+    private intertia: Action;
+    private sheetY: ValueReaction;
+
+    async componentWillLoad() {
+        this._screen = await this.screen.componentOnReady();
     }
 
     componentDidLoad() {
+        this._screen.connectedBottomSheet = this.element;
         this.setBoundariesHeight();
         this.sheetStyler = styler(this.sheetEl);
 
         const initialY = (this.initialPosition === 'bottom') ? this.boundaryHeight : 0;
-        const sheetY = value(initialY, v => this.sheetStyler.set('y', v));
+        this.sheetY = value(initialY, v => this.sheetStyler.set('y', v));
         
-        this.subscriptions = [...this.subscriptions, sheetY.subscribe(this.onValueChange)];
+        this.subscriptions = [...this.subscriptions, this.sheetY.subscribe(this.onValueChange)];
 
         listen(this.sheetEl, 'mousedown touchstart').start(() => {
             this.dragging = true;
+
             const max = this.boundaryHeight;
             const tug = 0.2;
             
@@ -50,22 +103,24 @@ export class BottomSheet {
                 return v
             }
 
-            pointer({ y: sheetY.get() as any })
-                .pipe(({ y }) => y, applyOverdrag)
-                .start(sheetY);
+            this.pointer = pointer({ y: this.sheetY.get() as any })
+                .pipe(({ y }) => y, applyOverdrag);
+            this.pointer.start(this.sheetY)
         })
 
         listen(document, 'mouseup touchend').start(() => {
             this.dragging = false;
-            inertia({
+
+            this.intertia = inertia({
                 min: 0,
                 max: this.boundaryHeight,
-                from: sheetY.get(),
-                velocity: sheetY.getVelocity(),
-                power: 0.6,
+                from: this.sheetY.get(),
+                velocity: this.sheetY.getVelocity(),
+                power: 0.2,
                 bounceStiffness: 400,
                 bounceDamping: 22.5
-            }).start(sheetY);
+            });
+            this.intertia.start(this.sheetY);
         })
     }
 
@@ -74,6 +129,7 @@ export class BottomSheet {
             subscription.unsubscribe()
         }
         this.subscriptions = undefined;
+        clearAllBodyScrollLocks();
     }
 
     private boundaryHeight: number = 0;
