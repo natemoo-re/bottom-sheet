@@ -1,6 +1,6 @@
 {
   "name": "bottom-sheet",
-  "version": "0.0.0-alpha.0",
+  "version": "0.0.0-alpha.1",
   "description": "Bottom Sheet implemented as a Vanilla Web Component",
   "module": "dist/esm/index.js",
   "main": "dist/index.js",
