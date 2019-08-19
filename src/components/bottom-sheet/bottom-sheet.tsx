@@ -1,4 +1,4 @@
-import { Component, Prop, Listen, State, Watch, Method, Element } from '@stencil/core';
+import { Component, h, Prop, Listen, State, Watch, Method, Element } from '@stencil/core';
 import { styler, inertia, listen, pointer, value, calc, ValueReaction, Action, tween, TweenProps } from 'popmotion';
 import { Styler } from 'stylefire';
 import { HotSubscription } from 'popmotion/lib/reactions/types';

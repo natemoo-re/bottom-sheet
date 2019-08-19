@@ -1,4 +1,4 @@
-import { Component, Prop, Method, State, Watch, Listen } from '@stencil/core';
+import { Component, h, Host, Prop, Method, State, Watch, Listen } from '@stencil/core';
 
 
 @Component({
@@ -44,12 +44,10 @@ export class BottomSheetScreen {
         this.connectedBottomSheet.close();
     }
 
-    hostData() {
-        return {
-            style: {
-                pointerEvents: this.enabled ? `all` : `none`,
-                opacity: `${this.progress}`
-            }
-        }
+    render() {
+        return <Host style={{
+            pointerEvents: this.enabled ? `all` : `none`,
+            opacity: `${this.progress}`
+        }} />
     }
 }

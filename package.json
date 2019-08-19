@@ -21,7 +21,7 @@
     "popmotion": "^8.6.2"
   },
   "devDependencies": {
-    "@stencil/core": "~0.16.2"
+    "@stencil/core": "^1.2.5"
   },
   "license": "MIT",
   "keywords": [
