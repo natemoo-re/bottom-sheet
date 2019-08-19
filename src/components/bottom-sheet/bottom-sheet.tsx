@@ -1,4 +1,4 @@
-import { Component, h, Prop, Listen, State, Watch, Method, Element } from '@stencil/core';
+import { Component, h, Host, Prop, Listen, State, Watch, Method, Element } from '@stencil/core';
 import { styler, inertia, listen, pointer, value, calc, ValueReaction, Action, tween, TweenProps } from 'popmotion';
 import { Styler } from 'stylefire';
 import { HotSubscription } from 'popmotion/lib/reactions/types';
@@ -134,7 +134,7 @@ export class BottomSheet {
 
     private boundaryHeight: number = 0;
 
-    @Listen('window:resize')
+    @Listen('resize', { target: 'window' })
     protected resizeHandler() {
         console.log('resize');
         this.setBoundariesHeight();
@@ -144,21 +144,16 @@ export class BottomSheet {
         this.boundaryHeight = this.containerEl.getBoundingClientRect().height - this.sheetEl.getBoundingClientRect().height;
     }
 
-    hostData() {
-        return {
-            class: {
+    render() {
+        return (
+            <Host class={{
                 'is-dragging': this.dragging,
                 'is-closed': this.progress <= 0.09,
                 'is-open': this.progress >= 0.99
-            },
-            style: {
-                '--progress': `${this.progress}`
-            }
-        }
-    }
-
-    render() {
-        return (
+            }}
+                style={{
+                    '--progress': `${this.progress}`
+                }}>
             <div class="container" ref={el => this.containerEl = el}>
                 <div class="sheet" ref={el => this.sheetEl = el}>
                     <div class="sheet-header">
@@ -169,7 +164,8 @@ export class BottomSheet {
                         <slot/>
                     </div>
                 </div>
-            </div>
+                </div>
+            </Host>
         );
     }
 }
