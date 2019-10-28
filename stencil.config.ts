@@ -3,7 +3,10 @@ import { Config } from '@stencil/core';
 export const config: Config = {
   namespace: 'bottom-sheet',
   outputTargets:[
-    { type: 'dist' },
+    {
+      type: 'dist',
+      esmLoaderPath: '../loader'
+    },
     { type: 'docs-readme' },
     {
       type: 'www',
