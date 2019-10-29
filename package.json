@@ -6,7 +6,7 @@
   "module": "dist/index.mjs",
   "es2015": "dist/esm/index.mjs",
   "es2017": "dist/esm/index.mjs",
-  "types": "dist/types/index.d.ts",
+  "types": "dist/types/components.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
   "unpkg": "dist/bottom-sheet/bottom-sheet.js",
@@ -22,11 +22,11 @@
     "generate": "stencil generate"
   },
   "dependencies": {
-    "body-scroll-lock": "^2.6.1",
-    "popmotion": "^8.6.2"
+    "body-scroll-lock": "^2.6.4",
+    "popmotion": "^8.7.0"
   },
   "devDependencies": {
-    "@stencil/core": "1.3.3"
+    "@stencil/core": "1.7.4"
   },
   "license": "MIT",
   "keywords": [

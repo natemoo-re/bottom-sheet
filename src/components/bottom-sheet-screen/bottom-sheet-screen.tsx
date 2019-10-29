@@ -22,7 +22,7 @@ export class BottomSheetScreen {
     }
 
     @Prop() progress: number = 0;
-    
+
     @Watch('progress')
     progressChanged() {
         this.enabled = this.progress > 0;
@@ -30,12 +30,12 @@ export class BottomSheetScreen {
     }
 
     @Method()
-    enable() {
+    async enable() {
         this.enabled = true;
     }
 
     @Method()
-    disable() {
+    async disable() {
         this.enabled = false;
     }
 

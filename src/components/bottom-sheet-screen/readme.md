@@ -15,26 +15,39 @@
 
 ## Methods
 
-### `disable() => void`
+### `disable() => Promise<void>`
 
 
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 
 
-### `enable() => void`
+### `enable() => Promise<void>`
 
 
 
 #### Returns
 
-Type: `void`
+Type: `Promise<void>`
 
 
 
+
+## Dependencies
+
+### Used by
+
+ - [bottom-sheet](../bottom-sheet)
+
+### Graph
+```mermaid
+graph TD;
+  bottom-sheet --> bottom-sheet-screen
+  style bottom-sheet-screen fill:#f9f,stroke:#333,stroke-width:4px
+```
 
 ----------------------------------------------
 
