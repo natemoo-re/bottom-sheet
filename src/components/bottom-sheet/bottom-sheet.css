@@ -45,6 +45,7 @@
     max-width: var(--sheet-max-width);
 
     position: relative;
+    z-index: var(--sheet-z-index, 9);
 }
 
 .sheet {
