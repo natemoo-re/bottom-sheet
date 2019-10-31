@@ -18,7 +18,6 @@ export namespace Components {
   }
   interface BottomSheetIndicator {}
   interface BottomSheetScreen {
-    'connectedBottomSheet': HTMLBottomSheetElement;
     'disable': () => Promise<void>;
     'enable': () => Promise<void>;
     'progress': number;
@@ -59,7 +58,7 @@ declare namespace LocalJSX {
   }
   interface BottomSheetIndicator {}
   interface BottomSheetScreen {
-    'connectedBottomSheet'?: HTMLBottomSheetElement;
+    'onCloseBottomSheet'?: (event: CustomEvent<void>) => void;
     'progress'?: number;
   }
 

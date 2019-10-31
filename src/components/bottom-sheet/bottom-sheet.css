@@ -13,7 +13,7 @@
     --sheet-box-shadow-open: var(--sheet-box-shadow);
     --sheet-background-color: white;
     --sheet-border-radius: 8px;
-    
+
     --sheet-content-padding: 12px;
     --sheet-content-padding-top: var(--sheet-content-padding);
     --sheet-content-padding-right: var(--sheet-content-padding);
@@ -22,25 +22,25 @@
 
     --sheet-indicator-size: 24px;
     --sheet-indicator-color: rgba(0,0,0,0.54);
-    --sheet-z-index: 9;
 
     display: block;
     position: fixed;
-    
+
     top: var(--snap-top-offset);
     right: 0;
     bottom: calc(-100vh + calc(var(--snap-top-offset) - var(--snap-bottom-height)));
     left: 0;
-    
+
     pointer-events: none;
-    z-index: var(--sheet-z-index);
+    z-index: var(--sheet-z-index, 9);
 }
 
 .container {
     height: 100%;
     margin: 0 auto;
     max-width: var(--sheet-max-width);
-    /* background: red; */
+
+    position: relative;
 }
 
 .sheet {

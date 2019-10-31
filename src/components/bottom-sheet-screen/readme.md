@@ -7,10 +7,16 @@
 
 ## Properties
 
-| Property               | Attribute                | Description | Type     | Default     |
-| ---------------------- | ------------------------ | ----------- | -------- | ----------- |
-| `connectedBottomSheet` | `connected-bottom-sheet` |             | `any`    | `undefined` |
-| `progress`             | `progress`               |             | `number` | `0`         |
+| Property   | Attribute  | Description | Type     | Default |
+| ---------- | ---------- | ----------- | -------- | ------- |
+| `progress` | `progress` |             | `number` | `0`     |
+
+
+## Events
+
+| Event              | Description | Type                |
+| ------------------ | ----------- | ------------------- |
+| `closeBottomSheet` |             | `CustomEvent<void>` |
 
 
 ## Methods
