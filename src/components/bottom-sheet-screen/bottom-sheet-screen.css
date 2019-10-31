@@ -12,4 +12,6 @@
 
     z-index: calc(var(--sheet-z-index) - 1);
     background-color: var(--sheet-screen-background, rgba(0,0,0,0.4));
+
+    cursor: var(--sheet-screen-cursor, pointer);
 }

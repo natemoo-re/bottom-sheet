@@ -35,6 +35,10 @@
     z-index: var(--sheet-z-index, 9);
 }
 
+:host(.is-closed), :host(.is-dragging) {
+  cursor: var(--sheet-cursor, pointer);
+}
+
 .container {
     height: 100%;
     margin: 0 auto;
