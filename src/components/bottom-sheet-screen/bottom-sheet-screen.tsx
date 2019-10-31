@@ -16,7 +16,6 @@ export class BottomSheetScreen {
     @Watch('progress')
     progressChanged() {
         this.enabled = this.progress > 0;
-        console.log(this.enabled, this.progress);
     }
 
     @Method()

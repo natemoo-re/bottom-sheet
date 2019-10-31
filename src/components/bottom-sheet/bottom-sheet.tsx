@@ -127,7 +127,6 @@ export class BottomSheet {
 
     @Listen('resize', { target: 'window' })
     protected resizeHandler() {
-        console.log('resize');
         this.setBoundariesHeight();
     }
 
