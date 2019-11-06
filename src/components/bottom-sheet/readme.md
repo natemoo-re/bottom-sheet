@@ -36,6 +36,21 @@ Type: `Promise<void>`
 
 
 
+## Dependencies
+
+### Depends on
+
+- [bottom-sheet-indicator](../bottom-sheet-indicator)
+- [bottom-sheet-screen](../bottom-sheet-screen)
+
+### Graph
+```mermaid
+graph TD;
+  bottom-sheet --> bottom-sheet-indicator
+  bottom-sheet --> bottom-sheet-screen
+  style bottom-sheet fill:#f9f,stroke:#333,stroke-width:4px
+```
+
 ----------------------------------------------
 
 *Built with [StencilJS](https://stenciljs.com/)*

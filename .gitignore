@@ -1,5 +1,9 @@
 dist/
 www/
+loader/
+
+.idea
+.editorconfig
 
 *~
 *.sw[mnpcod]
@@ -23,3 +27,4 @@ $RECYCLE.BIN/
 Thumbs.db
 UserInterfaceState.xcuserstate
 .env
+/loader/

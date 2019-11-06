@@ -8,7 +8,7 @@ div {
     justify-content: center;
     width: var(--sheet-indicator-size);
     height: var(--sheet-indicator-size);
-    margin: 0 auto var(--sheet-content-padding-bottom) auto;
+    margin: 0 auto var(--sheet-indicator-margin-bottom, 0) auto;
     transform: rotateZ(calc(var(--progress) * -180deg));
     color: var(--sheet-indicator-color);
 }

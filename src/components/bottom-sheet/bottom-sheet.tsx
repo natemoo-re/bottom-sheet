@@ -19,12 +19,9 @@ export class BottomSheet {
 
     private subscriptions: HotSubscription[] = [];
     private containerEl: HTMLDivElement;
-    
+
     private sheetEl: HTMLDivElement;
     private sheetStyler: Styler;
-
-    private _screen: HTMLBottomSheetScreenElement;
-    @Prop({ connect: 'bottom-sheet-screen' }) screen: HTMLBottomSheetScreenElement;
 
     @State() dragging: boolean = false;
     @Watch('dragging')
@@ -60,15 +57,14 @@ export class BottomSheet {
     async open() {
         return this.animateSheet(0, { ease: cubicBezier(0.23, 1, 0.320, 1) })
     }
-    
+
     @Method()
     async close() {
         return this.animateSheet(this.boundaryHeight, { ease: cubicBezier(0.23, 1, 0.320, 1) })
     }
-    
+
     private onValueChange = (v: number) => {
         this.progress = 1 - (v / this.boundaryHeight);
-        this._screen.progress = this.progress;
     }
 
     // private getCurrentAction = () => this.dragging ? this.pointer : this.intertia;
@@ -77,18 +73,13 @@ export class BottomSheet {
     private intertia: Action;
     private sheetY: ValueReaction;
 
-    async componentWillLoad() {
-        this._screen = await this.screen.componentOnReady();
-    }
-
     componentDidLoad() {
-        this._screen.connectedBottomSheet = this.element;
         this.setBoundariesHeight();
         this.sheetStyler = styler(this.sheetEl);
 
         const initialY = (this.initialPosition === 'bottom') ? this.boundaryHeight : 0;
         this.sheetY = value(initialY, v => this.sheetStyler.set('y', v));
-        
+
         this.subscriptions = [...this.subscriptions, this.sheetY.subscribe(this.onValueChange)];
 
         listen(this.sheetEl, 'mousedown touchstart').start(() => {
@@ -96,15 +87,15 @@ export class BottomSheet {
 
             const max = this.boundaryHeight;
             const tug = 0.2;
-            
-            const applyOverdrag = v => {
+
+          const applyOverdrag = v => {
                 if (v < 0) return mix(0, v, tug)
                 if (v > max) return mix(max, v, tug)
                 return v
             }
 
-            this.pointer = pointer({ y: this.sheetY.get() as any })
-                .pipe(({ y }) => y, applyOverdrag);
+          this.pointer = pointer({ y: this.sheetY.get() as any })
+            .pipe(({ y }) => y, applyOverdrag);
             this.pointer.start(this.sheetY)
         })
 
@@ -136,7 +127,6 @@ export class BottomSheet {
 
     @Listen('resize', { target: 'window' })
     protected resizeHandler() {
-        console.log('resize');
         this.setBoundariesHeight();
     }
 
@@ -154,18 +144,23 @@ export class BottomSheet {
                 style={{
                     '--progress': `${this.progress}`
                 }}>
-            <div class="container" ref={el => this.containerEl = el}>
-                <div class="sheet" ref={el => this.sheetEl = el}>
-                    <div class="sheet-header">
-                        { this.arrow && <bottom-sheet-indicator /> }
-                        <slot name="sheet-header" />
-                    </div>
-                    <div class="sheet-content">
-                        <slot/>
-                    </div>
-                </div>
+                {this.renderBackdrop()}
+                <div class="container" ref={el => this.containerEl = el}>
+                  <div class="sheet" ref={el => this.sheetEl = el}>
+                      <div class="sheet-header">
+                          { this.arrow && <bottom-sheet-indicator /> }
+                          <slot name="sheet-header" />
+                      </div>
+                      <div class="sheet-content">
+                          <slot/>
+                      </div>
+                  </div>
                 </div>
             </Host>
         );
+    }
+
+    private renderBackdrop() {
+      return <bottom-sheet-screen progress={this.progress} onCloseBottomSheet={() => this.close()}></bottom-sheet-screen>;
     }
 }
