@@ -53,7 +53,8 @@
     display: flex;
     flex-flow: column;
     background: var(--sheet-background-color);
-    height: calc(calc(100vh + calc(var(--snap-bottom-height) * 2)) - var(--snap-top-offset));
+    min-height: calc(calc(100vh + calc(var(--snap-bottom-height) * 2)) - var(--snap-top-offset));
+    height: fit-content;
     padding-bottom: var(--snap-bottom-height);
     overflow: hidden;
     border-top-left-radius: var(--sheet-border-radius);
@@ -63,6 +64,8 @@
 
 :host(.is-closed) .sheet {
     box-shadow: var(--sheet-box-shadow-closed);
+    min-height: auto;
+    height: calc(calc(100vh + calc(var(--snap-bottom-height) * 2)) - var(--snap-top-offset));
 }
 
 :host(.is-open) .sheet {

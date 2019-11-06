@@ -1,12 +1,9 @@
 import { Component, h, Host, Prop, Listen, State, Watch, Method, Element } from '@stencil/core';
-import { styler, inertia, listen, pointer, value, calc, ValueReaction, Action, tween, TweenProps } from 'popmotion';
+import { styler, inertia, listen, pointer, value, ValueReaction, Action, tween, TweenProps } from 'popmotion';
 import { Styler } from 'stylefire';
 import { HotSubscription } from 'popmotion/lib/reactions/types';
 import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock/lib/bodyScrollLock.es6.js';
 import { cubicBezier } from '@popmotion/easing';
-
-const mix = calc.getValueFromProgress;
-
 
 @Component({
     tag: 'bottom-sheet',
@@ -85,26 +82,26 @@ export class BottomSheet {
         listen(this.sheetEl, 'mousedown touchstart').start(() => {
             this.dragging = true;
 
-            const max = this.boundaryHeight;
-            const tug = 0.2;
+          const applyOverdrag = v => {
+            const minY: number = (window.innerHeight|| screen.height) - this.sheetEl.offsetHeight;
+            const deltaMin: number = 50;
+            return v < (minY - deltaMin) ? (minY - deltaMin) : v;
+          };
 
-            const applyOverdrag = v => {
-                if (v < 0) return mix(0, v, tug)
-                if (v > max) return mix(max, v, tug)
-                return v
-            }
-
-            this.pointer = pointer({ y: this.sheetY.get() as any })
-                .pipe(({ y }) => y, applyOverdrag);
-            this.pointer.start(this.sheetY)
-        })
+          this.pointer = pointer({ y: this.sheetY.get() as any })
+            .pipe(({ y }) => y, applyOverdrag);
+          this.pointer.start(this.sheetY);
+        });
 
         listen(document, 'mouseup touchend').start(() => {
             this.dragging = false;
 
+            const minY: number = (window.innerHeight|| screen.height) - this.sheetEl.offsetHeight;
+            const deltaMin: number = 200;
+
             this.intertia = inertia({
-                min: 0,
-                max: this.boundaryHeight,
+                min: this.sheetY.get() < 0 ? (this.sheetY.get() < minY ? minY : (this.sheetY.get() as number) - deltaMin) : 0,
+                max: this.sheetY.get() < 0 ? (window.innerHeight|| screen.height) : this.boundaryHeight,
                 from: this.sheetY.get(),
                 velocity: this.sheetY.getVelocity(),
                 power: 0.2,
